@@ -15,7 +15,7 @@ class cItemLilypadHandler :
 	typedef cItemHandler super;
 
 public:
-	cItemLilypadHandler(int a_ItemType):
+	cItemLilypadHandler(int a_ItemType) :
 		super(a_ItemType)
 	{
 
@@ -34,6 +34,13 @@ public:
 		int a_BlockX, int a_BlockY, int a_BlockZ, eBlockFace a_BlockFace
 	) override
 	{
+		BLOCKTYPE BlockType;
+		NIBBLETYPE BlockMeta;
+		a_World->GetBlockTypeMeta(a_BlockX, a_BlockY, a_BlockZ, BlockType, BlockMeta);
+		if (IsBlockWater(BlockType) && BlockMeta != 0) {
+			// Block should be source water
+			return false;
+		}
 		if (a_BlockFace > BLOCK_FACE_NONE)
 		{
 			// Clicked on the side of a submerged block; vanilla allows placement, so should we
